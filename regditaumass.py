@@ -11,6 +11,8 @@ from sklearn.cross_validation import KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 
+myfile = ROOT.TFile("regditaumass.root","RECREATE")
+
 #load dataset
 dataframe_mass_train = pandas.read_csv("train_reg_ditau_mass.csv",delim_whitespace=False,header=None)
 dataset_mass_train = dataframe_mass_train.values
@@ -78,9 +80,19 @@ for j in ditaumass_all:
 #histogram of di-tau mass using regression hadronic decays
 canv1 = ROOT.TCanvas("di-tau mass using regression hadronic")
 histditaumassreg.Draw()
+histditaumassreg.Write()
+
+img1 = ROOT.TImage.Create()
+img1.FromPad(canv1)
+img1.WriteImage("reg_ditau_mass_hadronic.png")
 
 #histogram of di-tau mass using regression all decays
 canv2 = ROOT.TCanvas("di-tau mass using regression all decays")
 histditaumassregall.Draw()
+histditaumassregall.Write()
 
-canv2.WaitPrimitive()
+img2 = ROOT.TImage.Create()
+img2.FromPad(canv2)
+img2.WriteImage("reg_ditau_mass_all.png")
+
+myfile.Close()
