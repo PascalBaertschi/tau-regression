@@ -120,7 +120,7 @@ nntarget_test_dy = numpy.array(pandas.read_csv(nntarget_test_dy_name, delim_whit
 
 
 ######################### run neural network  ######################
-output_name = "higgs_dy_nostand_24"
+output_name = "higgs_dy"
 description_of_training = "standardized input data  INPUT: 1000 (classification of decaychannel) vis tau1 (pt,eta,phi,E,mass)+vis tau2 (pt,eta,phi,E,mass)+MET_ET+MET_Phi+collinear ditaumass"
 output_file_name = "%s.txt" % (output_name)
 output_file = open(output_file_name,'w')
