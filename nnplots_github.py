@@ -47,17 +47,17 @@ loss_values = pandas.read_csv(loss_values_name, delim_whitespace=False,header=No
 val_loss_values = pandas.read_csv(val_loss_values_name, delim_whitespace=False,header=None).values[:,0]
 
 ###############  getting test values
-test_input_name = "%/nninput_test_nostand_small.csv" % inputvalues_path
-test_ditaumass_name = "%/nntarget_test_nostand_small.csv" % inputvalues_path
-ditauvismass_name = "%/ditauvismass_test_nostand_small.csv" % inputvalues_path
-collinear_ditaumass_name = "%/ditaucollinearmass_test_nostand_small.csv" % inputvalues_path
-test_ditaumass_100GeV_name = "%/nntarget_test_100GeV_nostand_small.csv" % inputvalues_path
-test_ditaumass_110GeV_name = "%/nntarget_test_110GeV_nostand_small.csv" % inputvalues_path
-test_ditaumass_125GeV_name = "%/nntarget_test_125GeV_nostand_small.csv" % inputvalues_path
-test_ditaumass_140GeV_name = "%/nntarget_test_140GeV_nostand_small.csv" % inputvalues_path
-test_ditaumass_180GeV_name = "%/nntarget_test_180GeV_nostand_small.csv" % inputvalues_path
-test_ditaumass_250GeV_name = "%/nntarget_test_250GeV_nostand_small.csv" % inputvalues_path
-test_ditaumass_dy_name = "%/nntarget_test_dy_nostand_small.csv" % inputvalues_path
+test_input_name = "%s/nninput_test_nostand_small.csv" % inputvalues_path
+test_ditaumass_name = "%s/nntarget_test_nostand_small.csv" % inputvalues_path
+ditauvismass_name = "%s/ditauvismass_test_nostand_small.csv" % inputvalues_path
+collinear_ditaumass_name = "%s/ditaucollinearmass_test_nostand_small.csv" % inputvalues_path
+test_ditaumass_100GeV_name = "%s/nntarget_test_100GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_110GeV_name = "%s/nntarget_test_110GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_125GeV_name = "%s/nntarget_test_125GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_140GeV_name = "%s/nntarget_test_140GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_180GeV_name = "%s/nntarget_test_180GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_250GeV_name = "%s/nntarget_test_250GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_dy_name = "%s/nntarget_test_dy_nostand_small.csv" % inputvalues_path
 
 test_input_selected = pandas.read_csv(test_input_name, delim_whitespace=False,header=None).values[:,:]
 test_ditaumass_selected = pandas.read_csv(test_ditaumass_name, delim_whitespace=False,header=None).values[:,0]
