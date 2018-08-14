@@ -8,9 +8,11 @@ import time
 import math
 import sys
 import csv
+import os
 
 nnoutput_name = "higgs_dy"   # name of outputs of the neural network
-nnoutput_path = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nnoutput"           # path to output of neural network
+nnoutput_path = "nnoutput"           # path to output of neural network
+plotoutput_path = "final_plots"           # path to output of neural network
 output_name = "higgs_dy"     # name of plots
 decaymode = "no" # choose "fulllep","semilep" or "fullhad" to get plots with only events with one decay channel
 bias_correction = "no"   # choose "gen" or "reco" to correct the bias using the gen mass or the reconstructed mass
@@ -19,6 +21,8 @@ signalrange = "no" # choose "yes" to get signal to background ratio in the signa
 signalrange_tight = "no" # choose "yes" to get signal to background ratio in a tight range around the signal
 epochs = 400
 
+if not os.path.exists(plotoutput_path):
+    os.makedirs(plotoutput_path)
 
 ####################   getting the neural network outputs ###########################
 nn_output_name = "%s/nnoutput_%s.csv" % (nnoutput_path,nnoutput_name)
@@ -69,30 +73,30 @@ test_ditaumass_250GeV = pandas.read_csv(test_ditaumass_250GeV_name, delim_whites
 test_ditaumass_dy = pandas.read_csv(test_ditaumass_dy_name, delim_whitespace=False,header=None).values[:,0]
 
 #####################  getting the SVfit output ###############################################
-ditaumass_svfit =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_wholerange_40.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit_gen =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_wholerange_40_gen.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit_decaymode =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_wholerange_40_decaymode.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit100GeV =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_100GeV_5.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit100GeV_gen =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_100GeV_5_gen.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit100GeV_decaymode =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_100GeV_5_decaymode.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit110GeV =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_110GeV_5.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit110GeV_gen =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_110GeV_5_gen.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit110GeV_decaymode =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_110GeV_5_decaymode.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit125GeV = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_125GeV_5.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit125GeV_gen = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_125GeV_5_gen.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit125GeV_decaymode = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_125GeV_5_decaymode.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfitdy =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_dy_15.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfitdy_gen =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_dy_15_gen.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfitdy_decaymode =  pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_dy_15_decaymode.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit140GeV = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_140GeV_15.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit140GeV_gen = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_140GeV_15_gen.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit140GeV_decaymode = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_140GeV_15_decaymode.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit180GeV = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_180GeV_4.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit180GeV_gen = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_180GeV_4_gen.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit180GeV_decaymode = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_180GeV_4_decaymode.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit250GeV = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_250GeV_4.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit250GeV_gen = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_250GeV_4_gen.csv", delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit250GeV_decaymode = pandas.read_csv("/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/final_plots/ditau_mass_svfit_small_250GeV_4_decaymode.csv", delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit100GeV =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit100GeV_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit100GeV_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit110GeV =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit110GeV_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit110GeV_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit125GeV = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit125GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit125GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfitdy =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfitdy_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfitdy_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit140GeV = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit140GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit140GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit180GeV = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit180GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit180GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit250GeV = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit250GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
+ditaumass_svfit250GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
 
 #################### nn values for different decaymodes ######################
 ditaumass_nn_decaymode = []
@@ -763,7 +767,7 @@ def prep_histograms(epochs):
     img1.FromPad(canv1)
     img1.WriteImage(output_plot_name)
 
-  
+
 def prep_svfit_histograms():
     for i,ditaumass_value in enumerate(ditaumass_svfit_gen):
         histditaumasssvfit.Fill(ditaumass_svfit[i])
@@ -838,7 +842,7 @@ def correct_genbias():
     for f,ditaumass_value in enumerate(ditaumass_svfit_gen):
         ditaumass_svfit_value = ditaumass_svfit[f]
         res = (ditaumass_value - ditaumass_svfit_value)/ditaumass_value
-        profditaumasssvfitcorrresbefore.Fill(ditaumass_value,res) 
+        profditaumasssvfitcorrresbefore.Fill(ditaumass_value,res)
     fitfunc_svfit = ROOT.TF1("fitfunc_svfit","pol 2",0,350)
     profditaumasssvfitcorrresbefore.Fit(fitfunc_svfit)
     for j, ditaumass_value in enumerate(ditaumass_svfit_gen):
@@ -987,7 +991,7 @@ def scale(hist):
     hist.Scale(1./integral)
 
 def efficiency(hist,signal_left,signal_right,number_test_values):
-    return integral(hist,signal_left,signal_right)[0]/number_test_values 
+    return integral(hist,signal_left,signal_right)[0]/number_test_values
 
 def efficiency_comp(eff_sig_nn,eff_bkg_nn,eff_sig_svfit,eff_bkg_svfit):
     return (eff_sig_nn/numpy.sqrt(eff_bkg_nn))/(eff_sig_svfit/numpy.sqrt(eff_bkg_svfit))
@@ -1857,5 +1861,3 @@ if signal == "140GeV" and signalrange == "yes" and signalrange_tight == "no":
     img.WriteImage(output_hist140GeVDY_name)
 if signalrange == "yes":
     output_file.close()
-
-
