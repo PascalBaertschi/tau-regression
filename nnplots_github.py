@@ -12,7 +12,8 @@ import os
 
 nnoutput_name = "higgs_dy"   # name of outputs of the neural network
 nnoutput_path = "nnoutput"           # path to output of neural network
-plotoutput_path = "final_plots"           # path to output of neural network
+svfitoutput_path = "final_plots"     # path to output of SVfit
+inputvalues_path = "nninput"         # path to input values
 output_name = "higgs_dy"     # name of plots
 decaymode = "no" # choose "fulllep","semilep" or "fullhad" to get plots with only events with one decay channel
 bias_correction = "no"   # choose "gen" or "reco" to correct the bias using the gen mass or the reconstructed mass
@@ -21,8 +22,6 @@ signalrange = "no" # choose "yes" to get signal to background ratio in the signa
 signalrange_tight = "no" # choose "yes" to get signal to background ratio in a tight range around the signal
 epochs = 400
 
-if not os.path.exists(plotoutput_path):
-    os.makedirs(plotoutput_path)
 
 ####################   getting the neural network outputs ###########################
 nn_output_name = "%s/nnoutput_%s.csv" % (nnoutput_path,nnoutput_name)
@@ -48,17 +47,17 @@ loss_values = pandas.read_csv(loss_values_name, delim_whitespace=False,header=No
 val_loss_values = pandas.read_csv(val_loss_values_name, delim_whitespace=False,header=None).values[:,0]
 
 ###############  getting test values
-test_input_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/nninput_test_nostand_small.csv"
-test_ditaumass_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/nntarget_test_nostand_small.csv"
-ditauvismass_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/ditauvismass_test_nostand_small.csv"
-collinear_ditaumass_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/ditaucollinearmass_test_nostand_small.csv"
-test_ditaumass_100GeV_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/nntarget_test_100GeV_nostand_small.csv"
-test_ditaumass_110GeV_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/nntarget_test_110GeV_nostand_small.csv"
-test_ditaumass_125GeV_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/nntarget_test_125GeV_nostand_small.csv"
-test_ditaumass_140GeV_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/nntarget_test_140GeV_nostand_small.csv"
-test_ditaumass_180GeV_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/nntarget_test_180GeV_nostand_small.csv"
-test_ditaumass_250GeV_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/nntarget_test_250GeV_nostand_small.csv"
-test_ditaumass_dy_name = "/mnt/t3nfs01/data01/shome/pbaertsc/tauregression/CMSSW_8_0_23/src/nninput/nntarget_test_dy_nostand_small.csv"
+test_input_name = "%/nninput_test_nostand_small.csv" % inputvalues_path
+test_ditaumass_name = "%/nntarget_test_nostand_small.csv" % inputvalues_path
+ditauvismass_name = "%/ditauvismass_test_nostand_small.csv" % inputvalues_path
+collinear_ditaumass_name = "%/ditaucollinearmass_test_nostand_small.csv" % inputvalues_path
+test_ditaumass_100GeV_name = "%/nntarget_test_100GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_110GeV_name = "%/nntarget_test_110GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_125GeV_name = "%/nntarget_test_125GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_140GeV_name = "%/nntarget_test_140GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_180GeV_name = "%/nntarget_test_180GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_250GeV_name = "%/nntarget_test_250GeV_nostand_small.csv" % inputvalues_path
+test_ditaumass_dy_name = "%/nntarget_test_dy_nostand_small.csv" % inputvalues_path
 
 test_input_selected = pandas.read_csv(test_input_name, delim_whitespace=False,header=None).values[:,:]
 test_ditaumass_selected = pandas.read_csv(test_ditaumass_name, delim_whitespace=False,header=None).values[:,0]
@@ -73,30 +72,30 @@ test_ditaumass_250GeV = pandas.read_csv(test_ditaumass_250GeV_name, delim_whites
 test_ditaumass_dy = pandas.read_csv(test_ditaumass_dy_name, delim_whitespace=False,header=None).values[:,0]
 
 #####################  getting the SVfit output ###############################################
-ditaumass_svfit =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit100GeV =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit100GeV_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit100GeV_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit110GeV =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit110GeV_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit110GeV_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit125GeV = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit125GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit125GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfitdy =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfitdy_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfitdy_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit140GeV = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit140GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit140GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit180GeV = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit180GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit180GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit250GeV = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit250GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4_gen.csv", delim_whitespace=False,header=None).values[:,0 % plotoutput_path]
-ditaumass_svfit250GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4_decaymode.csv" % plotoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit100GeV =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit100GeV_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit100GeV_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit110GeV =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit110GeV_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit110GeV_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit125GeV = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit125GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit125GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfitdy =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfitdy_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfitdy_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit140GeV = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit140GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit140GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit180GeV = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit180GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit180GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit250GeV = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit250GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit250GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
 
 #################### nn values for different decaymodes ######################
 ditaumass_nn_decaymode = []
@@ -231,175 +230,238 @@ if signal =="140GeV":
 ROOT.TGaxis.SetMaxDigits(3)
 #histogram of ditau mass using neural network and SVfit
 histtitle = "reconstruct di-#tau mass using a neural network and SVfit"
-histditaumass = ROOT.TH1D("ditaumass",histtitle,70,0,350)
+histditaumass = ROOT.TH1D("ditaumass",histtitle,60,50,350)
 histditaumass.SetTitleSize(0.3,"t")
 histditaumass.GetXaxis().SetTitle("")
 histditaumass.GetXaxis().SetLabelSize(0)
 histditaumass.GetYaxis().SetTitle("number of occurence")
-histditaumass.GetYaxis().SetTitleSize(0.049)
+histditaumass.GetYaxis().SetTitleSize(0.06)
 histditaumass.GetYaxis().SetTitleOffset(0.75)
-histditaumass.GetYaxis().SetLabelSize(0.049)
+histditaumass.GetYaxis().SetLabelSize(0.06)
 histditaumass.SetLineColor(2)
 histditaumass.SetLineWidth(3)
 histditaumass.SetStats(0)
-histditaumassgen = ROOT.TH1D("ditaumassgen","di-#tau_{gen} mass and visible mass",70,0,350)
+histditaumassgen = ROOT.TH1D("ditaumassgen","di-#tau_{gen} mass and visible mass",60,50,350)
 histditaumassgen.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassgen.GetYaxis().SetTitle("number of occurence")
+histditaumassgen.GetXaxis().SetTitleSize(0.04)
+histditaumassgen.GetXaxis().SetLabelSize(0.04)
+histditaumassgen.GetYaxis().SetTitleSize(0.04)
+histditaumassgen.GetYaxis().SetLabelSize(0.04)
 histditaumassgen.SetLineColor(2)
 histditaumassgen.SetLineWidth(3)
 histditaumassgen.SetStats(0)
-histditauvismass = ROOT.TH1D("ditauvismass","reconstructed di-#tau vismass using neural network",70,0,350)
+histditauvismass = ROOT.TH1D("ditauvismass","reconstructed di-#tau vismass using neural network",60,50,350)
 histditauvismass.SetLineColor(6)
 histditauvismass.SetLineWidth(3)
 histditauvismass.SetLineStyle(7)
 histditauvismass.SetStats(0)
-histditaumassnn = ROOT.TH1D("ditaumassnn","reconstructed di-#tau mass using neural network",70,0,350)
+histditaumassnn = ROOT.TH1D("ditaumassnn","reconstructed di-#tau mass using neural network",60,50,350)
 histditaumassnn.SetLineColor(4)
 histditaumassnn.SetLineWidth(3)
 histditaumassnn.SetLineStyle(7)
 histditaumassnn.SetStats(0)
-histditaumasssvfit = ROOT.TH1D("ditaumasssvfit","di-#tau mass using SVfit",70,0,350)
+histditaumasssvfit = ROOT.TH1D("ditaumasssvfit","di-#tau mass using SVfit",60,50,350)
 histditaumasssvfit.SetLineColor(8)
 histditaumasssvfit.SetLineWidth(3)
 histditaumasssvfit.SetLineStyle(2)
 histditaumasssvfit.SetStats(0)
-histditaucollmass = ROOT.TH1D("ditaucollmass","collinear ditau mass",70,0,350)
+histditaucollmass = ROOT.TH1D("ditaucollmass","collinear ditau mass",60,50,350)
 histditaucollmass.SetLineColor(7)
 histditaucollmass.SetLineWidth(3)
 histditaucollmass.SetLineStyle(3)
 histditaucollmass.SetStats(0)
 
 
-histditaumassnncorr = ROOT.TH2D("ditaumassnncorr","di-#tau_{gen} mass vs di-#tau mass",400,0,400,400,0,400)
+histditaumassnncorr = ROOT.TH2D("ditaumassnncorr","di-#tau_{gen} mass vs di-#tau mass",350,50,400,350,50,400)
 histditaumassnncorr.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnncorr.GetYaxis().SetTitle("di-#tau mass [GeV]")
+histditaumassnncorr.GetXaxis().SetTitleSize(0.04)
+histditaumassnncorr.GetXaxis().SetLabelSize(0.04)
+histditaumassnncorr.GetYaxis().SetTitleSize(0.04)
+histditaumassnncorr.GetYaxis().SetLabelSize(0.04)
 histditaumassnncorr.SetStats(0)
-histditaumasssvfitcorr = ROOT.TH2D("ditaumasssvfitcorr","di-#tau_{gen} mass vs di-#tau mass",400,0,400,400,0,400)
+histditaumasssvfitcorr = ROOT.TH2D("ditaumasssvfitcorr","di-#tau_{gen} mass vs di-#tau mass",350,50,400,350,50,400)
 histditaumasssvfitcorr.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumasssvfitcorr.GetYaxis().SetTitle("di-#tau mass [GeV]")
+histditaumasssvfitcorr.GetXaxis().SetTitleSize(0.04)
+histditaumasssvfitcorr.GetXaxis().SetLabelSize(0.04)
+histditaumasssvfitcorr.GetYaxis().SetTitleSize(0.04)
+histditaumasssvfitcorr.GetYaxis().SetLabelSize(0.04)
 histditaumasssvfitcorr.SetStats(0)
 
-profditaumassnncorrrms = ROOT.TProfile("profditaumassnncorrrms","di-#tau_{gen} mass vs mean(di-#tau mass)",350,0,350,"s")
+profditaumassnncorrrms = ROOT.TProfile("profditaumassnncorrrms","di-#tau_{gen} mass vs mean(di-#tau mass)",300,50,350,"s")
 
-histditaumassnnrms =ROOT.TH1D("ditaumassnnrms","RMS per di-#tau_{gen} mass",350,0,350)
+histditaumassnnrms =ROOT.TH1D("ditaumassnnrms","RMS per di-#tau_{gen} mass",300,50,350)
 histditaumassnnrms.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnnrms.GetYaxis().SetTitle("RMS")
+histditaumassnnrms.GetXaxis().SetTitleSize(0.04)
+histditaumassnnrms.GetXaxis().SetLabelSize(0.04)
+histditaumassnnrms.GetYaxis().SetTitleSize(0.04)
+histditaumassnnrms.GetYaxis().SetLabelSize(0.04)
 histditaumassnnrms.SetStats(0)
 histditaumassnnrms.SetMarkerStyle(7)
 
 histditaumassnnres = ROOT.TH1D("resolution","relative difference per event using neural network",80,-1,1)
 histditaumassnnres.GetXaxis().SetTitle("relative difference per event")
 histditaumassnnres.GetYaxis().SetTitle("number of occurence")
+histditaumassnnres.GetXaxis().SetTitleSize(0.04)
+histditaumassnnres.GetXaxis().SetLabelSize(0.04)
+histditaumassnnres.GetYaxis().SetTitleSize(0.04)
+histditaumassnnres.GetYaxis().SetLabelSize(0.04)
 histditaumassnnres.SetLineWidth(3)
 histditaumassnnrescomp = ROOT.TH1D("NN","relative difference per event",80,-1,1)
 histditaumassnnrescomp.GetXaxis().SetTitle("relative difference per event")
 histditaumassnnrescomp.GetYaxis().SetTitle("number of occurence")
+histditaumassnnrescomp.GetXaxis().SetTitleSize(0.04)
+histditaumassnnrescomp.GetXaxis().SetLabelSize(0.04)
+histditaumassnnrescomp.GetYaxis().SetTitleSize(0.04)
+histditaumassnnrescomp.GetYaxis().SetLabelSize(0.04)
 histditaumassnnrescomp.SetLineColor(4)
 histditaumassnnrescomp.SetLineWidth(3)
 histditaumasssvfitres = ROOT.TH1D("SVfit","relative difference per event using SVfit",80,-1,1)
 histditaumasssvfitres.SetLineColor(8)
 histditaumasssvfitres.SetLineWidth(3)
 
-histditaumassnncorrres = ROOT.TH2D("ditaumassnncorrres","relative difference per event",350,0,350,80,-1,1)
+histditaumassnncorrres = ROOT.TH2D("ditaumassnncorrres","relative difference per event",300,50,350,80,-1,1)
 histditaumassnncorrres.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnncorrres.GetYaxis().SetTitle("relative difference per event")
+histditaumassnncorrres.GetXaxis().SetTitleSize(0.04)
+histditaumassnncorrres.GetXaxis().SetLabelSize(0.04)
+histditaumassnncorrres.GetYaxis().SetTitleSize(0.04)
+histditaumassnncorrres.GetYaxis().SetLabelSize(0.04)
 histditaumassnncorrres.SetStats(0)
-histditaumasssvfitcorrres = ROOT.TH2D("ditaumasssvfitcorrres","relative difference per event",350,0,350,80,-1,1)
+histditaumasssvfitcorrres = ROOT.TH2D("ditaumasssvfitcorrres","relative difference per event",300,50,350,80,-1,1)
 histditaumasssvfitcorrres.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumasssvfitcorrres.GetYaxis().SetTitle("relative difference per event")
+histditaumasssvfitcorrres.GetXaxis().SetTitleSize(0.04)
+histditaumasssvfitcorrres.GetXaxis().SetLabelSize(0.04)
+histditaumasssvfitcorrres.GetYaxis().SetTitleSize(0.04)
+histditaumasssvfitcorrres.GetYaxis().SetLabelSize(0.04)
 histditaumasssvfitcorrres.SetStats(0)
 
+bin_number = 50
 before_limit = 100
 if bias_correction == "gen":
+    bin_number = 300
     before_limit = 350
 if bias_correction == "reco":
+    bin_number = 400
     before_limit = 450
-profditaumassnncorrresbefore = ROOT.TProfile("profditaumassnncorrresbefore","bias in the di-#tau mass reconstruction",before_limit,0,before_limit)
+profditaumassnncorrresbefore = ROOT.TProfile("profditaumassnncorrresbefore","bias in the di-#tau mass reconstruction",bin_number,50,before_limit)
 if bias_correction == "gen":
     profditaumassnncorrresbefore.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 if bias_correction == "reco":
     profditaumassnncorrresbefore.GetXaxis().SetTitle("di-#tau mass [GeV]")
 profditaumassnncorrresbefore.GetYaxis().SetTitle("bias")
 profditaumassnncorrresbefore.GetYaxis().SetTitleOffset(1.2)
+profditaumassnncorrresbefore.GetXaxis().SetTitleSize(0.04)
+profditaumassnncorrresbefore.GetXaxis().SetLabelSize(0.04)
+profditaumassnncorrresbefore.GetYaxis().SetTitleSize(0.04)
+profditaumassnncorrresbefore.GetYaxis().SetLabelSize(0.04)
 profditaumassnncorrresbefore.SetStats(0)
 profditaumassnncorrresbefore.SetLineColor(4)
 profditaumassnncorrresbefore.SetMarkerStyle(7)
 profditaumassnncorrresbefore.SetMarkerColor(4)
-profditaumassnncorrres = ROOT.TProfile("profditaumassnncorrres","bias in the di-#tau mass reconstruction",350,0,350)
+profditaumassnncorrres = ROOT.TProfile("profditaumassnncorrres","bias in the di-#tau mass reconstruction",300,50,350)
 profditaumassnncorrres.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 profditaumassnncorrres.GetYaxis().SetTitle("bias")
+profditaumassnncorrres.GetXaxis().SetTitleSize(0.04)
+profditaumassnncorrres.GetXaxis().SetLabelSize(0.04)
+profditaumassnncorrres.GetYaxis().SetTitleSize(0.04)
+profditaumassnncorrres.GetYaxis().SetLabelSize(0.04)
 profditaumassnncorrres.GetYaxis().SetTitleOffset(1.2)
 profditaumassnncorrres.SetStats(0)
 profditaumassnncorrres.SetMarkerStyle(7)
-histprofditaumassnncorrres = ROOT.TH1D("histprofditaumassnncorrres","bias in the di-#tau mass reconstruction",350,0,350)
+histprofditaumassnncorrres = ROOT.TH1D("histprofditaumassnncorrres","bias in the di-#tau mass reconstruction",300,50,350)
 histprofditaumassnncorrres.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 #histprofditaumassnncorrres.GetXaxis().SetTitle("di-#tau mass [GeV]")
 histprofditaumassnncorrres.GetYaxis().SetTitle("bias")
+histprofditaumassnncorrres.GetXaxis().SetTitleSize(0.04)
+histprofditaumassnncorrres.GetXaxis().SetLabelSize(0.04)
+histprofditaumassnncorrres.GetYaxis().SetTitleSize(0.04)
+histprofditaumassnncorrres.GetYaxis().SetLabelSize(0.04)
 histprofditaumassnncorrres.GetYaxis().SetTitleOffset(1.2)
 histprofditaumassnncorrres.SetStats(0)
 histprofditaumassnncorrres.SetLineColor(4)
 histprofditaumassnncorrres.SetMarkerStyle(7)
 histprofditaumassnncorrres.SetMarkerColor(4)
-profditaumasssvfitcorrresbefore = ROOT.TProfile("profditaumasssvfitcorrresbefore","bias in the di-#tau mass reconstruction",before_limit,0,before_limit)
+profditaumasssvfitcorrresbefore = ROOT.TProfile("profditaumasssvfitcorrresbefore","bias in the di-#tau mass reconstruction",bin_number,50,before_limit)
 profditaumasssvfitcorrresbefore.SetStats(0)
 profditaumasssvfitcorrresbefore.SetLineColor(8)
 profditaumasssvfitcorrresbefore.SetMarkerStyle(7)
 profditaumasssvfitcorrresbefore.SetMarkerColor(8)
-profditaumasssvfitcorrres = ROOT.TProfile("profditaumasssvfitcorrres","bias in the di-#tau mass reconstruction",350,0,350)
+profditaumasssvfitcorrres = ROOT.TProfile("profditaumasssvfitcorrres","bias in the di-#tau mass reconstruction",300,50,350)
 profditaumasssvfitcorrres.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 profditaumasssvfitcorrres.GetYaxis().SetTitle("bias")
+profditaumasssvfitcorrres.GetXaxis().SetTitleSize(0.04)
+profditaumasssvfitcorrres.GetXaxis().SetLabelSize(0.04)
+profditaumasssvfitcorrres.GetYaxis().SetTitleSize(0.04)
+profditaumasssvfitcorrres.GetYaxis().SetLabelSize(0.04)
 profditaumasssvfitcorrres.GetYaxis().SetTitleOffset(1.2)
 profditaumasssvfitcorrres.SetStats(0)
 profditaumasssvfitcorrres.SetMarkerStyle(7)
-histprofditaumasssvfitcorrres = ROOT.TH1D("histprofditaumasssvfitcorrres","mean of resolution per di-#tau_{gen} mass",350,0,350)
+histprofditaumasssvfitcorrres = ROOT.TH1D("histprofditaumasssvfitcorrres","mean of resolution per di-#tau_{gen} mass",300,50,350)
 histprofditaumasssvfitcorrres.SetStats(0)
 histprofditaumasssvfitcorrres.SetLineColor(8)
 histprofditaumasssvfitcorrres.SetMarkerStyle(7)
 histprofditaumasssvfitcorrres.SetMarkerColor(8)
 
-profditaumassnncorrabsres = ROOT.TProfile("profditaumassnncorrabsres","average of the absolute relative differences per event",350,0,350)
+profditaumassnncorrabsres = ROOT.TProfile("profditaumassnncorrabsres","average of the absolute relative differences per event",300,50,350)
 profditaumassnncorrabsres.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 profditaumassnncorrabsres.GetYaxis().SetTitle("average of the absolute relative difference per event")
+profditaumassnncorrabsres.GetXaxis().SetTitleSize(0.04)
+profditaumassnncorrabsres.GetXaxis().SetLabelSize(0.04)
+profditaumassnncorrabsres.GetYaxis().SetTitleSize(0.04)
+profditaumassnncorrabsres.GetYaxis().SetLabelSize(0.04)
 profditaumassnncorrabsres.GetYaxis().SetTitleOffset(1.2)
 profditaumassnncorrabsres.SetStats(0)
 profditaumassnncorrabsres.SetMarkerStyle(7)
-histprofditaumassnncorrabsres = ROOT.TH1D("histprofditaumassnncorrabsres","average of the absolute relative differences per event",350,0,350)
+histprofditaumassnncorrabsres = ROOT.TH1D("histprofditaumassnncorrabsres","average of the absolute relative differences per event",300,50,350)
 histprofditaumassnncorrabsres.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histprofditaumassnncorrabsres.GetYaxis().SetTitle("average of the absolute relative differences per event")
+histprofditaumassnncorrabsres.GetXaxis().SetTitleSize(0.04)
+histprofditaumassnncorrabsres.GetXaxis().SetLabelSize(0.04)
+histprofditaumassnncorrabsres.GetYaxis().SetTitleSize(0.04)
+histprofditaumassnncorrabsres.GetYaxis().SetLabelSize(0.04)
 histprofditaumassnncorrabsres.GetYaxis().SetTitleOffset(1.2)
 histprofditaumassnncorrabsres.SetStats(0)
 histprofditaumassnncorrabsres.SetLineColor(4)
 histprofditaumassnncorrabsres.SetMarkerStyle(7)
 histprofditaumassnncorrabsres.SetMarkerColor(4)
-profditaumasssvfitcorrabsres = ROOT.TProfile("profditaumasssvfitcorrabsres","average of the absolute relative differences per event",350,0,350)
+profditaumasssvfitcorrabsres = ROOT.TProfile("profditaumasssvfitcorrabsres","average of the absolute relative differences per event",300,50,350)
 profditaumasssvfitcorrabsres.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 profditaumasssvfitcorrabsres.GetYaxis().SetTitle("average of the absolute relative difference per event")
+profditaumasssvfitcorrabsres.GetXaxis().SetTitleSize(0.04)
+profditaumasssvfitcorrabsres.GetXaxis().SetLabelSize(0.04)
+profditaumasssvfitcorrabsres.GetYaxis().SetTitleSize(0.04)
+profditaumasssvfitcorrabsres.GetYaxis().SetLabelSize(0.04)
 profditaumasssvfitcorrabsres.GetYaxis().SetTitleOffset(1.2)
 profditaumasssvfitcorrabsres.SetStats(0)
 profditaumasssvfitcorrabsres.SetMarkerStyle(7)
-histprofditaumasssvfitcorrabsres = ROOT.TH1D("histprofditaumasssvfitcorrabsres","mean of |resolution| per di-#tau_{gen} mass",350,0,350)
+histprofditaumasssvfitcorrabsres = ROOT.TH1D("histprofditaumasssvfitcorrabsres","mean of |resolution| per di-#tau_{gen} mass",300,50,350)
 histprofditaumasssvfitcorrabsres.SetStats(0)
 histprofditaumasssvfitcorrabsres.SetLineColor(8)
 histprofditaumasssvfitcorrabsres.SetMarkerStyle(7)
 histprofditaumasssvfitcorrabsres.SetMarkerColor(8)
 
 #ratio histograms
-histditaumassnnratio = ROOT.TH1D("ditaumassregallratio","ratio between reconstruced and actual mass",70,0,350)
+histditaumassnnratio = ROOT.TH1D("ditaumassregallratio","ratio between reconstruced and actual mass",60,50,350)
 histditaumassnnratio.SetTitle("")
 histditaumassnnratio.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
-histditaumassnnratio.GetXaxis().SetLabelSize(0.115)
-histditaumassnnratio.GetXaxis().SetTitleSize(0.115)
+histditaumassnnratio.GetXaxis().SetLabelSize(0.12)
+histditaumassnnratio.GetXaxis().SetTitleSize(0.12)
 histditaumassnnratio.GetYaxis().SetTitle("ratio")
-histditaumassnnratio.GetYaxis().SetLabelSize(0.115)
-histditaumassnnratio.GetYaxis().SetTitleSize(0.115)
-histditaumassnnratio.GetYaxis().SetTitleOffset(0.3)
+histditaumassnnratio.GetYaxis().SetLabelSize(0.13)
+histditaumassnnratio.GetYaxis().SetTitleSize(0.13)
+histditaumassnnratio.GetYaxis().SetTitleOffset(0.37)
 histditaumassnnratio.GetYaxis().SetNdivisions(404)
 histditaumassnnratio.GetYaxis().CenterTitle()
 histditaumassnnratio.GetYaxis().SetRangeUser(0.0,2.0)
 histditaumassnnratio.SetMarkerStyle(7)
 histditaumassnnratio.SetMarkerColor(4)
 histditaumassnnratio.SetStats(0)
-histditaumasssvfitratio = ROOT.TH1D("ditaumasssvfitratio","ratio between svfit and actual mass",70,0,350)
+histditaumasssvfitratio = ROOT.TH1D("ditaumasssvfitratio","ratio between svfit and actual mass",60,50,350)
 histditaumasssvfitratio.SetMarkerStyle(7)
 histditaumasssvfitratio.SetMarkerColor(8)
 histditaumasssvfitratio.SetStats(0)
@@ -408,6 +470,10 @@ histditaumasssvfitratio.SetStats(0)
 histditaumass100GeV = ROOT.TH1D("ditaumass100GeV","reconstruct di-#tau mass using neural network and SVfit",100,70,130)
 histditaumass100GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass100GeV.GetYaxis().SetTitle("number of occurence")
+histditaumass100GeV.GetXaxis().SetTitleSize(0.04)
+histditaumass100GeV.GetXaxis().SetLabelSize(0.04)
+histditaumass100GeV.GetYaxis().SetTitleSize(0.04)
+histditaumass100GeV.GetYaxis().SetLabelSize(0.04)
 histditaumass100GeV.SetLineColor(2)
 histditaumass100GeV.SetLineWidth(3)
 histditaumass100GeV.SetStats(0)
@@ -424,6 +490,10 @@ histditaumasssvfit100GeV.SetStats(0)
 histditaumassnnres100GeV = ROOT.TH1D("NN100GeV","relative difference per event",80,-1,1)
 histditaumassnnres100GeV.GetXaxis().SetTitle("relative difference per event")
 histditaumassnnres100GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnnres100GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnnres100GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnnres100GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnnres100GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnnres100GeV.SetLineColor(4)
 histditaumassnnres100GeV.SetLineWidth(3)
 histditaumasssvfitres100GeV = ROOT.TH1D("SVfit100GeV","relative difference per event using SVfit",80,-1,1)
@@ -434,6 +504,10 @@ histditaumasssvfitres100GeV.SetLineWidth(3)
 histditaumass110GeV = ROOT.TH1D("ditaumass110GeV","reconstruct di-#tau mass using neural network and SVfit",100,80,140)
 histditaumass110GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass110GeV.GetYaxis().SetTitle("number of occurence")
+histditaumass110GeV.GetXaxis().SetTitleSize(0.04)
+histditaumass110GeV.GetXaxis().SetLabelSize(0.04)
+histditaumass110GeV.GetYaxis().SetTitleSize(0.04)
+histditaumass110GeV.GetYaxis().SetLabelSize(0.04)
 histditaumass110GeV.SetLineColor(2)
 histditaumass110GeV.SetLineWidth(3)
 histditaumass110GeV.SetStats(0)
@@ -450,6 +524,10 @@ histditaumasssvfit110GeV.SetStats(0)
 histditaumassnnres110GeV = ROOT.TH1D("NN110GeV","relative difference per event",80,-1,1)
 histditaumassnnres110GeV.GetXaxis().SetTitle("relative difference per event")
 histditaumassnnres110GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnnres110GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnnres110GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnnres110GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnnres110GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnnres110GeV.SetLineColor(4)
 histditaumassnnres110GeV.SetLineWidth(3)
 histditaumasssvfitres110GeV = ROOT.TH1D("SVfit110GeV","relative difference per event using SVfit",80,-1,1)
@@ -460,12 +538,20 @@ histditaumasssvfitres110GeV.SetLineWidth(3)
 histditaumass125GeV = ROOT.TH1D("ditaumass125GeV","reconstruct di-#tau mass using neural network and SVfit",100,95,155)
 histditaumass125GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass125GeV.GetYaxis().SetTitle("number of occurence")
+histditaumass125GeV.GetXaxis().SetTitleSize(0.04)
+histditaumass125GeV.GetXaxis().SetLabelSize(0.04)
+histditaumass125GeV.GetYaxis().SetTitleSize(0.04)
+histditaumass125GeV.GetYaxis().SetLabelSize(0.04)
 histditaumass125GeV.SetLineColor(2)
 histditaumass125GeV.SetLineWidth(3)
 histditaumass125GeV.SetStats(0)
 histditaumassnn125GeV = ROOT.TH1D("ditaumassnn125GeV","reconstruct di-#tau mass using neural network",100,95,155)
 histditaumassnn125GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnn125GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnn125GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnn125GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnn125GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnn125GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnn125GeV.SetLineColor(4)
 histditaumassnn125GeV.SetLineWidth(3)
 histditaumassnn125GeV.SetLineStyle(7)
@@ -478,6 +564,10 @@ histditaumasssvfit125GeV.SetStats(0)
 histditaumassnnres125GeV = ROOT.TH1D("NN125GeV","relative difference per event",80,-1,1)
 histditaumassnnres125GeV.GetXaxis().SetTitle("relative difference per event")
 histditaumassnnres125GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnnres125GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnnres125GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnnres125GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnnres125GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnnres125GeV.SetLineColor(4)
 histditaumassnnres125GeV.SetLineWidth(3)
 histditaumasssvfitres125GeV = ROOT.TH1D("SVfit125GeV","relative difference per event using SVfit",80,-1,1)
@@ -488,12 +578,20 @@ histditaumasssvfitres125GeV.SetLineWidth(3)
 histditaumass140GeV = ROOT.TH1D("ditaumass140GeV","reconstruct di-#tau mass using neural network and SVfit",100,110,170)
 histditaumass140GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass140GeV.GetYaxis().SetTitle("number of occurence")
+histditaumass140GeV.GetXaxis().SetTitleSize(0.04)
+histditaumass140GeV.GetXaxis().SetLabelSize(0.04)
+histditaumass140GeV.GetYaxis().SetTitleSize(0.04)
+histditaumass140GeV.GetYaxis().SetLabelSize(0.04)
 histditaumass140GeV.SetLineColor(2)
 histditaumass140GeV.SetLineWidth(3)
 histditaumass140GeV.SetStats(0)
 histditaumassnn140GeV = ROOT.TH1D("ditaumassnn140GeV","reconstruct di-#tau mass using neural network",100,110,170)
 histditaumassnn140GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnn140GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnn140GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnn140GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnn140GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnn140GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnn140GeV.SetLineColor(4)
 histditaumassnn140GeV.SetLineWidth(3)
 histditaumassnn140GeV.SetLineStyle(7)
@@ -506,6 +604,10 @@ histditaumasssvfit140GeV.SetStats(0)
 histditaumassnnres140GeV = ROOT.TH1D("NN140GeV","relative difference per event",80,-1,1)
 histditaumassnnres140GeV.GetXaxis().SetTitle("relative difference per event")
 histditaumassnnres140GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnnres140GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnnres140GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnnres140GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnnres140GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnnres140GeV.SetLineColor(4)
 histditaumassnnres140GeV.SetLineWidth(3)
 histditaumasssvfitres140GeV = ROOT.TH1D("SVfit140GeV","relative difference per event using SVfit",80,-1,1)
@@ -530,6 +632,10 @@ histditaumasssvfitdy.SetStats(0)
 histditaumassnnresdy = ROOT.TH1D("NNdy","relative difference per event",80,-1,1)
 histditaumassnnresdy.GetXaxis().SetTitle("relative difference per event")
 histditaumassnnresdy.GetYaxis().SetTitle("number of occurence")
+histditaumassnnresdy.GetXaxis().SetTitleSize(0.04)
+histditaumassnnresdy.GetXaxis().SetLabelSize(0.04)
+histditaumassnnresdy.GetYaxis().SetTitleSize(0.04)
+histditaumassnnresdy.GetYaxis().SetLabelSize(0.04)
 histditaumassnnresdy.SetLineColor(4)
 histditaumassnnresdy.SetLineWidth(3)
 histditaumasssvfitresdy = ROOT.TH1D("SVfitdy","relative difference per event using SVfit",80,-1,1)
@@ -540,6 +646,10 @@ histditaumasssvfitresdy.SetLineWidth(3)
 histditaumass100GeVcomp = ROOT.TH1D("ditaumass100GeVcomp","reconstruct di-#tau mass using neural network and SVfit",100,signal_bkg_left,signal_bkg_right)
 histditaumass100GeVcomp.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass100GeVcomp.GetYaxis().SetTitle("number of occurence")
+histditaumass100GeVcomp.GetXaxis().SetTitleSize(0.04)
+histditaumass100GeVcomp.GetXaxis().SetLabelSize(0.04)
+histditaumass100GeVcomp.GetYaxis().SetTitleSize(0.04)
+histditaumass100GeVcomp.GetYaxis().SetLabelSize(0.04)
 histditaumass100GeVcomp.SetLineColor(5)
 histditaumass100GeVcomp.SetLineWidth(3)
 histditaumass100GeVcomp.SetStats(0)
@@ -556,12 +666,20 @@ histditaumasssvfit100GeVcomp.SetStats(0)
 histditaumass110GeVcomp = ROOT.TH1D("ditaumass110GeVcomp","reconstruct di-#tau mass using neural network and SVfit",100,signal_bkg_left,signal_bkg_right)
 histditaumass110GeVcomp.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass110GeVcomp.GetYaxis().SetTitle("number of occurence")
+histditaumass110GeVcomp.GetXaxis().SetTitleSize(0.04)
+histditaumass110GeVcomp.GetXaxis().SetLabelSize(0.04)
+histditaumass110GeVcomp.GetYaxis().SetTitleSize(0.04)
+histditaumass110GeVcomp.GetYaxis().SetLabelSize(0.04)
 histditaumass110GeVcomp.SetLineColor(5)
 histditaumass110GeVcomp.SetLineWidth(3)
 histditaumass110GeVcomp.SetStats(0)
 histditaumassnn110GeVcomp = ROOT.TH1D("ditaumassnn110GeVcomp","reconstruct di-#tau mass using neural network",100,signal_bkg_left,signal_bkg_right)
 histditaumassnn110GeVcomp.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnn110GeVcomp.GetYaxis().SetTitle("number of occurence")
+histditaumassnn110GeVcomp.GetXaxis().SetTitleSize(0.04)
+histditaumassnn110GeVcomp.GetXaxis().SetLabelSize(0.04)
+histditaumassnn110GeVcomp.GetYaxis().SetTitleSize(0.04)
+histditaumassnn110GeVcomp.GetYaxis().SetLabelSize(0.04)
 histditaumassnn110GeVcomp.SetLineColor(3)
 histditaumassnn110GeVcomp.SetLineWidth(3)
 histditaumassnn110GeVcomp.SetLineStyle(7)
@@ -574,12 +692,20 @@ histditaumasssvfit110GeVcomp.SetStats(0)
 histditaumass125GeVcomp = ROOT.TH1D("ditaumass125GeVcomp","reconstruct di-#tau mass using neural network and SVfit",100,signal_bkg_left,signal_bkg_right)
 histditaumass125GeVcomp.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass125GeVcomp.GetYaxis().SetTitle("number of occurence")
+histditaumass125GeVcomp.GetXaxis().SetTitleSize(0.04)
+histditaumass125GeVcomp.GetXaxis().SetLabelSize(0.04)
+histditaumass125GeVcomp.GetYaxis().SetTitleSize(0.04)
+histditaumass125GeVcomp.GetYaxis().SetLabelSize(0.04)
 histditaumass125GeVcomp.SetLineColor(5)
 histditaumass125GeVcomp.SetLineWidth(3)
 histditaumass125GeVcomp.SetStats(0)
 histditaumassnn125GeVcomp = ROOT.TH1D("ditaumassnn125GeVcomp","reconstruct di-#tau mass using neural network",100,signal_bkg_left,signal_bkg_right)
 histditaumassnn125GeVcomp.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnn125GeVcomp.GetYaxis().SetTitle("number of occurence")
+histditaumassnn125GeVcomp.GetXaxis().SetTitleSize(0.04)
+histditaumassnn125GeVcomp.GetXaxis().SetLabelSize(0.04)
+histditaumassnn125GeVcomp.GetYaxis().SetTitleSize(0.04)
+histditaumassnn125GeVcomp.GetYaxis().SetLabelSize(0.04)
 histditaumassnn125GeVcomp.SetLineColor(3)
 histditaumassnn125GeVcomp.SetLineWidth(3)
 histditaumassnn125GeVcomp.SetLineStyle(7)
@@ -593,12 +719,20 @@ histditaumasssvfit125GeVcomp.SetStats(0)
 histditaumass140GeVcomp = ROOT.TH1D("ditaumass140GeVcomp","reconstruct di-#tau mass using neural network and SVfit",100,signal_bkg_left,signal_bkg_right)
 histditaumass140GeVcomp.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass140GeVcomp.GetYaxis().SetTitle("number of occurence")
+histditaumass140GeVcomp.GetXaxis().SetTitleSize(0.04)
+histditaumass140GeVcomp.GetXaxis().SetLabelSize(0.04)
+histditaumass140GeVcomp.GetYaxis().SetTitleSize(0.04)
+histditaumass140GeVcomp.GetYaxis().SetLabelSize(0.04)
 histditaumass140GeVcomp.SetLineColor(5)
 histditaumass140GeVcomp.SetLineWidth(3)
 histditaumass140GeVcomp.SetStats(0)
 histditaumassnn140GeVcomp = ROOT.TH1D("ditaumassnn140GeVcomp","reconstruct di-#tau mass using neural network",100,signal_bkg_left,signal_bkg_right)
 histditaumassnn140GeVcomp.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnn140GeVcomp.GetYaxis().SetTitle("number of occurence")
+histditaumassnn140GeVcomp.GetXaxis().SetTitleSize(0.04)
+histditaumassnn140GeVcomp.GetXaxis().SetLabelSize(0.04)
+histditaumassnn140GeVcomp.GetYaxis().SetTitleSize(0.04)
+histditaumassnn140GeVcomp.GetYaxis().SetLabelSize(0.04)
 histditaumassnn140GeVcomp.SetLineColor(3)
 histditaumassnn140GeVcomp.SetLineWidth(3)
 histditaumassnn140GeVcomp.SetLineStyle(7)
@@ -627,12 +761,20 @@ histditaumasssvfitdycomp.SetStats(0)
 histditaumass250GeV = ROOT.TH1D("ditaumass250GeV","reconstruct di-#tau mass using neural network and SVfit",100,220,280)
 histditaumass250GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass250GeV.GetYaxis().SetTitle("number of occurence")
+histditaumass250GeV.GetXaxis().SetTitleSize(0.04)
+histditaumass250GeV.GetXaxis().SetLabelSize(0.04)
+histditaumass250GeV.GetYaxis().SetTitleSize(0.04)
+histditaumass250GeV.GetYaxis().SetLabelSize(0.04)
 histditaumass250GeV.SetLineColor(2)
 histditaumass250GeV.SetLineWidth(3)
 histditaumass250GeV.SetStats(0)
 histditaumassnn250GeV = ROOT.TH1D("ditaumassnn250GeV","reconstructed di-#tau mass using neural network",100,220,280)
 histditaumassnn250GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnn250GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnn250GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnn250GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnn250GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnn250GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnn250GeV.SetLineColor(4)
 histditaumassnn250GeV.SetLineWidth(3)
 histditaumassnn250GeV.SetLineStyle(7)
@@ -645,6 +787,10 @@ histditaumasssvfit250GeV.SetStats(0)
 histditaumassnnres250GeV = ROOT.TH1D("NN250GeV","relative difference per event",80,-1,1)
 histditaumassnnres250GeV.GetXaxis().SetTitle("relative difference per event")
 histditaumassnnres250GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnnres250GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnnres250GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnnres250GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnnres250GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnnres250GeV.SetLineColor(4)
 histditaumassnnres250GeV.SetLineWidth(3)
 histditaumasssvfitres250GeV = ROOT.TH1D("SVfit250GeV","relative difference per event using SVfit",80,-1,1)
@@ -655,12 +801,20 @@ histditaumasssvfitres250GeV.SetLineWidth(3)
 histditaumass180GeV = ROOT.TH1D("ditaumass180GeV","reconstruct di-#tau mass using neural network and SVfit",100,150,210)
 histditaumass180GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumass180GeV.GetYaxis().SetTitle("number of occurence")
+histditaumass180GeV.GetXaxis().SetTitleSize(0.04)
+histditaumass180GeV.GetXaxis().SetLabelSize(0.04)
+histditaumass180GeV.GetYaxis().SetTitleSize(0.04)
+histditaumass180GeV.GetYaxis().SetLabelSize(0.04)
 histditaumass180GeV.SetLineColor(2)
 histditaumass180GeV.SetLineWidth(3)
 histditaumass180GeV.SetStats(0)
 histditaumassnn180GeV = ROOT.TH1D("ditaumassnn180GeV","reconstructed di-#tau mass using neural network",100,150,210)
 histditaumassnn180GeV.GetXaxis().SetTitle("di-#tau_{gen} mass [GeV]")
 histditaumassnn180GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnn180GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnn180GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnn180GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnn180GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnn180GeV.SetLineColor(4)
 histditaumassnn180GeV.SetLineWidth(3)
 histditaumassnn180GeV.SetLineStyle(7)
@@ -673,6 +827,10 @@ histditaumasssvfit180GeV.SetStats(0)
 histditaumassnnres180GeV = ROOT.TH1D("NN180GeV","relative difference per event",80,-1,1)
 histditaumassnnres180GeV.GetXaxis().SetTitle("relative difference per event")
 histditaumassnnres180GeV.GetYaxis().SetTitle("number of occurence")
+histditaumassnnres180GeV.GetXaxis().SetTitleSize(0.04)
+histditaumassnnres180GeV.GetXaxis().SetLabelSize(0.04)
+histditaumassnnres180GeV.GetYaxis().SetTitleSize(0.04)
+histditaumassnnres180GeV.GetYaxis().SetLabelSize(0.04)
 histditaumassnnres180GeV.SetLineColor(4)
 histditaumassnnres180GeV.SetLineWidth(3)
 histditaumasssvfitres180GeV = ROOT.TH1D("SVfit180GeV","relative difference per event using SVfit",80,-1,1)
@@ -728,10 +886,10 @@ def prep_histograms(epochs):
     for g in range(len(ditaumass_nn)):
         histditaumassnncorr.Fill(test_ditaumass_selected[g],ditaumass_nn[g])
         profditaumassnncorrrms.Fill(test_ditaumass_selected[g],ditaumass_nn[g])
-    for j in range(350):
+    for j in range(300):
         rms = profditaumassnncorrrms.GetBinError(j+1)
         histditaumassnnrms.SetBinContent(j+1,rms)
-    for k in range(70):
+    for k in range(60):
         if histditaumass.GetBinContent(k+1) != 0:
             content_nn = histditaumassnn.GetBinContent(k+1)
             content_actual = histditaumass.GetBinContent(k+1)
@@ -780,7 +938,7 @@ def prep_svfit_histograms():
         profditaumasssvfitcorrabsres.Fill(ditaumass_value,abs(res))
     for g in range(len(ditaumass_svfit)):
         histditaumasssvfitcorr.Fill(ditaumass_svfit_gen[g],ditaumass_svfit[g])
-    for k in range(70):
+    for k in range(60):
         if histditaumass.GetBinContent(k+1) != 0:
             content_svfit = histditaumasssvfit.GetBinContent(k+1)
             content_actual = histditaumass.GetBinContent(k+1)
@@ -997,7 +1155,13 @@ def efficiency_comp(eff_sig_nn,eff_bkg_nn,eff_sig_svfit,eff_bkg_svfit):
     return (eff_sig_nn/numpy.sqrt(eff_bkg_nn))/(eff_sig_svfit/numpy.sqrt(eff_bkg_svfit))
 
 def signal_to_background(eff_sig,cross_section_sig,eff_bkg,cross_section_bkg,luminosity):
-    return (eff_sig*cross_section_sig*luminosity)/numpy.sqrt(eff_bkg*cross_section_bkg*luminosity)
+    return numpy.sqrt(luminosity)*eff_sig*cross_section_sig/numpy.sqrt(eff_bkg*cross_section_bkg)
+
+def efficiency_error(hist,signal_left,signal_right,number_test_values):
+    return integral(hist,signal_left,signal_right)[1]/number_test_values 
+
+def signal_to_background_error(eff_sig,eff_sig_error,cross_section_sig,cross_section_sig_error,eff_bkg,eff_bkg_error,cross_section_bkg,cross_section_bkg_error,luminosity):
+    return numpy.sqrt((eff_sig_error*numpy.sqrt(luminosity)*cross_section_sig/numpy.sqrt(eff_bkg*cross_section_bkg))**2+(cross_section_sig_error*numpy.sqrt(luminosity)*eff_sig/numpy.sqrt(eff_bkg*cross_section_bkg))**2+(eff_bkg_error*numpy.sqrt(luminosity)*eff_sig*cross_section_sig*cross_section_bkg/(-2*(eff_bkg*cross_section_bkg)**(3/2)))**2+(cross_section_bkg_error*numpy.sqrt(luminosity)*eff_sig*cross_section_sig*eff_bkg/(-2*(eff_bkg*cross_section_bkg)**(3/2)))**2)
 
 ### cross sections in pb
 higgs_100GeV_cross_section = 0.8432*10**(-12)
@@ -1006,6 +1170,11 @@ higgs_125GeV_cross_section = 0.7002*10**(-12)
 higgs_140GeV_cross_section = 0.6351*10**(-12)
 z_cross_section = 1418*10**(-12)
 
+higgs_100GeV_cross_section_error = 0.0007517*10**(-12)
+higgs_110GeV_cross_section_error = 0.0008196*10**(-12)
+higgs_125GeV_cross_section_error = 0.0006399*10**(-12)
+higgs_140GeV_cross_section_error = 0.0007003*10**(-12)
+z_cross_section_error = 1.431*10**(-12)
 ### luminosity in inverse fb
 luminosity = 100*10**(15)
 
@@ -1043,8 +1212,8 @@ efficiency_comparison = efficiency_comp(eff_sig_nn,eff_bkg_nn,eff_sig_svfit,eff_
 
 print "signal:",signal
 print "signalrange limits:",signal_left,signal_right
-print "NN Signal over sqrt Background with cross_section and luminosity:",sig_to_bkg_nn
-print "SVfit Signal over sqrt Background with cross_section and luminosity:",sig_to_bkg_svfit
+print "NN Signal over sqrt Background with cross_section and luminosity:",sig_to_bkg_nn,"+-",sig_to_bkg_nn_error
+print "SVfit Signal over sqrt Background with cross_section and luminosity:",sig_to_bkg_svfit,"+-",sig_to_bkg_svfit_error
 print "efficiency comparison:",efficiency_comparison
 
 ##########################   save  histograms       ##########################
@@ -1070,7 +1239,7 @@ leg2.Draw()
 pad2.cd()
 histditaumassnnratio.Draw("P")
 histditaumasssvfitratio.Draw("P SAME")
-unit_line = ROOT.TLine(0.0,1.0,350.0,1.0)
+unit_line = ROOT.TLine(50.0,1.0,350.0,1.0)
 unit_line.SetLineColor(2)
 unit_line.Draw("SAME")
 output_hist_name = "%s.png" %(output_name)
@@ -1081,7 +1250,7 @@ img2.WriteImage(output_hist_name)
 
 canv3 = ROOT.TCanvas("ditaumassnncorr")
 histditaumassnncorr.Draw()
-line = ROOT.TLine(0.0,0.0,400.0,400.0)
+line = ROOT.TLine(50.0,50.0,400.0,400.0)
 line.Draw("SAME")
 line.SetLineWidth(2)
 output_hist_corr_name = "%s_corr.png" %(output_name)
@@ -1202,7 +1371,7 @@ leg2.Draw()
 pad2.cd()
 histditaumassnnratio.Draw("P")
 histditaumasssvfitratio.Draw("P SAME")
-unit_line = ROOT.TLine(0.0,1.0,350.0,1.0)
+unit_line = ROOT.TLine(50.0,1.0,350.0,1.0)
 unit_line.SetLineColor(2)
 unit_line.Draw("SAME")
 output_allhist_name = "%s_all.png" %(output_name)
