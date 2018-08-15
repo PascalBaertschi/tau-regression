@@ -12,6 +12,7 @@ import os
 
 nnoutput_name = "higgs_dy"   # name of outputs of the neural network
 nnoutput_path = "nnoutput"           # path to output of neural network
+svfitoutput_name = "ditau_mass"      # name of outputs of SVfit   
 svfitoutput_path = "final_plots"     # path to output of SVfit
 inputvalues_path = "nninput"         # path to input values
 output_name = "higgs_dy"     # name of plots
@@ -72,31 +73,30 @@ test_ditaumass_250GeV = pandas.read_csv(test_ditaumass_250GeV_name, delim_whites
 test_ditaumass_dy = pandas.read_csv(test_ditaumass_dy_name, delim_whitespace=False,header=None).values[:,0]
 
 #####################  getting the SVfit output ###############################################
-ditaumass_svfit =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_wholerange_40_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit100GeV =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit100GeV_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit100GeV_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_100GeV_5_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit110GeV =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit110GeV_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit110GeV_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_110GeV_5_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit125GeV = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit125GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit125GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_125GeV_5_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfitdy =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfitdy_gen =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfitdy_decaymode =  pandas.read_csv("%s/ditau_mass_svfit_small_dy_15_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit140GeV = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit140GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit140GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_140GeV_15_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit180GeV = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit180GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit180GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_180GeV_4_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit250GeV = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit250GeV_gen = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4_gen.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-ditaumass_svfit250GeV_decaymode = pandas.read_csv("%s/ditau_mass_svfit_small_250GeV_4_decaymode.csv" % svfitoutput_path, delim_whitespace=False,header=None).values[:,0]
-
+ditaumass_svfit =  pandas.read_csv("%s/%s_wholerange.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit_gen =  pandas.read_csv("%s/%s_wholerange_gen.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit_decaymode =  pandas.read_csv("%s/%s_wholerange_decaymode.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit100GeV =  pandas.read_csv("%s/%s_100GeV.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit100GeV_gen =  pandas.read_csv("%s/%s_100GeV_gen.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit100GeV_decaymode =  pandas.read_csv("%s/%s_100GeV_decaymode.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit110GeV =  pandas.read_csv("%s/%s_110GeV.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit110GeV_gen =  pandas.read_csv("%s/%s_110GeV_gen.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit110GeV_decaymode =  pandas.read_csv("%s/%s_110GeV_decaymode.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit125GeV = pandas.read_csv("%s/%s_125GeV.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit125GeV_gen = pandas.read_csv("%s/%s_125GeV_gen.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit125GeV_decaymode = pandas.read_csv("%s/%s_125GeV_decaymode.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfitdy =  pandas.read_csv("%s/%s_dy.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfitdy_gen =  pandas.read_csv("%s/%s_dy_gen.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfitdy_decaymode =  pandas.read_csv("%s/%s_dy_decaymode.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit140GeV = pandas.read_csv("%s/%s_140GeV.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit140GeV_gen = pandas.read_csv("%s/%s_140GeV_gen.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit140GeV_decaymode = pandas.read_csv("%s/%s_140GeV_decaymode.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit180GeV = pandas.read_csv("%s/%s_180GeV.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit180GeV_gen = pandas.read_csv("%s/%s_180GeV_gen.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit180GeV_decaymode = pandas.read_csv("%s/%s_180GeV_decaymode.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit250GeV = pandas.read_csv("%s/%s_250GeV.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit250GeV_gen = pandas.read_csv("%s/%s_250GeV_gen.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
+ditaumass_svfit250GeV_decaymode = pandas.read_csv("%s/%s_250GeV_decaymode.csv" % (svfitoutput_path,svfitoutput_name), delim_whitespace=False,header=None).values[:,0]
 #################### nn values for different decaymodes ######################
 ditaumass_nn_decaymode = []
 if decaymode == "fulllep":
