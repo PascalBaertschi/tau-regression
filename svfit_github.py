@@ -142,8 +142,8 @@ ditaumass = pandas.read_csv(test_ditaumass_name, delim_whitespace=False,header=N
 inputSVfit_length = len(ditaumass)
 #####################################################################
 
-output_name = "ditau_mass_svfit_small_wholerange"
-output_file_name = "%s.txt" % (output_name)
+output_name = "ditau_mass_svfit"
+output_file_name = "%s_%s.txt" % (output_name,choose_input)
 output_file = open(output_file_name,'w')
 sys.stdout = output_file
 #################             run SVfit          #########################
@@ -163,9 +163,9 @@ print "SVfit execution time:",(end_svfit-start_svfit)/3600 ,"h"
 print "SVfit execution time per event:",(end_svfit-start_svfit)/(inputSVfit_length/nprocesses),"s"
 
 
-svfit_output_name = "%s.csv" %(output_name)
-svfit_gen_name = "%s_gen.csv" %(output_name)
-svfit_decaymode_name = "%s_decaymode.csv" %(output_name)
+svfit_output_name = "%s_%s.csv" %(output_name,choose_input)
+svfit_gen_name = "%s_%s_gen.csv" %(output_name,choose_input)
+svfit_decaymode_name = "%s_%s_decaymode.csv" %(output_name,choose_input)
 numpy.savetxt(svfit_output_name, ditaumass_svfit_calc, delimiter=",")
 numpy.savetxt(svfit_gen_name, ditaumass_actual, delimiter=",")
 numpy.savetxt(svfit_decaymode_name, ditaumass_decaymode, delimiter=",")
