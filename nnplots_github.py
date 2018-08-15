@@ -12,8 +12,8 @@ import os
 
 nnoutput_name = "higgs_dy"   # name of outputs of the neural network
 nnoutput_path = "nnoutput"           # path to output of neural network
-svfitoutput_name = "ditau_mass"      # name of outputs of SVfit   
-svfitoutput_path = "final_plots"     # path to output of SVfit
+svfitoutput_name = "ditau_mass_svfit"      # name of outputs of SVfit   
+svfitoutput_path = "svfitoutput"     # path to output of SVfit
 inputvalues_path = "nninput"         # path to input values
 output_name = "higgs_dy"     # name of plots
 decaymode = "no" # choose "fulllep","semilep" or "fullhad" to get plots with only events with one decay channel
