@@ -39,5 +39,23 @@ cmsenv
 
 Running SVfit is only recommended if there is access to 10 or more CPU cores.
 
-Set the library path: export LD_LIBRARY_PATH=${PWD}/../svFit/lib:${LD_LIBRARY_PATH}` and
+SVfit algorithm for tau pair mass reconstruction (stand-alone version)
+
+
+Clone repository from Clemens Lange https://github.com/clelange/SVfit_standalone.git and change to the SVfit_standalone directory.
+
+```shell
+mkdir build
+cd build
+cmake ../ -DCMAKE_INSTALL_PREFIX=../svFit
+make -j4
+make test ARGS="--output-on-failure"
+make install
+```
+Now you should have the shared library libSVfitStandaloneAlgorithm.so and dictionary in the ../svFit directory. To be able to load the library, you need to extend the LD_LIBRARY_PATH. Run from the build directory:
+
+export LD_LIBRARY_PATH=${PWD}/../svFit/lib:${LD_LIBRARY_PATH}
+
+This export is needed whenever you open a new shell.
+
 run [svfit_github.py](svfit_github.py) in `CMSSW_8_0_23` (see above).
