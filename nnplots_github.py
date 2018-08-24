@@ -1168,7 +1168,7 @@ def correct_genbias():
     for i,ditaumass_value in enumerate(test_ditaumass_selected):
         res = (ditaumass_value - ditaumass_nn[i])/ditaumass_value
         profditaumassnncorrresbefore.Fill(ditaumass_value,res)
-    fitfunc_nn = ROOT.TF1("fitfunc_nn","pol 3",0,350)
+    fitfunc_nn = ROOT.TF1("fitfunc_nn","pol 3",50,350)
     profditaumassnncorrresbefore.Fit(fitfunc_nn)
     for i,ditaumass_value in enumerate(test_ditaumass_selected):
         nn_bias = fitfunc_nn.Eval(ditaumass_value)
@@ -1179,7 +1179,7 @@ def correct_genbias():
         ditaumass_svfit_value = ditaumass_svfit[f]
         res = (ditaumass_value - ditaumass_svfit_value)/ditaumass_value
         profditaumasssvfitcorrresbefore.Fill(ditaumass_value,res)
-    fitfunc_svfit = ROOT.TF1("fitfunc_svfit","pol 2",0,350)
+    fitfunc_svfit = ROOT.TF1("fitfunc_svfit","pol 2",50,350)
     profditaumasssvfitcorrresbefore.Fit(fitfunc_svfit)
     for j, ditaumass_value in enumerate(ditaumass_svfit_gen):
         svfit_bias = fitfunc_svfit.Eval(ditaumass_value)
@@ -1191,7 +1191,7 @@ def correct_bias():
     for i,ditaumass_value in enumerate(test_ditaumass_selected):
         res = (ditaumass_value - ditaumass_nn[i])/ditaumass_value
         profditaumassnncorrresbefore.Fill(ditaumass_nn[i],res)
-    fitfunc_nn = ROOT.TF1("fitfunc_nn","pol 5",0,450)
+    fitfunc_nn = ROOT.TF1("fitfunc_nn","pol 5",50,450)
     profditaumassnncorrresbefore.Fit(fitfunc_nn)
     for i,ditaumass_value in enumerate(ditaumass_nn):
         nn_bias = fitfunc_nn.Eval(ditaumass_value)
@@ -1202,7 +1202,7 @@ def correct_bias():
         ditaumass_svfit_value = ditaumass_svfit[f]
         res = (ditaumass_value - ditaumass_svfit_value)/ditaumass_value
         profditaumasssvfitcorrresbefore.Fill(ditaumass_svfit_value,res)
-    fitfunc_svfit = ROOT.TF1("fitfunc_svfit","pol 7",0,450)
+    fitfunc_svfit = ROOT.TF1("fitfunc_svfit","pol 7",50,450)
     profditaumasssvfitcorrresbefore.Fit(fitfunc_svfit)
     for j, ditaumass_value in enumerate(ditaumass_svfit):
         svfit_bias = fitfunc_svfit.Eval(ditaumass_value)
